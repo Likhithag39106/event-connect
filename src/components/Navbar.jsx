@@ -1,38 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
-const Navbar = ({ selectedCollege, setSelectedCollege }) => {
+const Navbar = () => {
   const navigate = useNavigate();
 
-  const handleCollegeChange = (e) => {
-    setSelectedCollege(e.target.value);
-  };
-
   return (
-    <nav style={styles.nav}>
+    <div style={styles.nav}>
       <h2 style={styles.logo} onClick={() => navigate("/home")}>
         EventConnect
       </h2>
 
       <div style={styles.links}>
+        {/* ✅ ADD THIS */}
         <button onClick={() => navigate("/home")}>Home</button>
 
-        {/* College Dropdown */}
-        <select value={selectedCollege} onChange={handleCollegeChange}>
-          <option value="">All Colleges</option>
-          <option value="ABC College">ABC College</option>
-          <option value="XYZ College">XYZ College</option>
-          <option value="DEF College">DEF College</option>
-        </select>
+        <button onClick={() => navigate("/create")}>Create</button>
+        <button onClick={() => navigate("/profile")}>Profile</button>
 
-        <button onClick={() => navigate("/create")}>
-          Register Event
-        </button>
-
-        <button onClick={() => navigate("/profile")}>
-          Profile
+        <button
+          onClick={() => {
+            signOut(auth);
+            navigate("/login");
+          }}
+        >
+          Logout
         </button>
       </div>
-    </nav>
+    </div>
   );
 };
 
@@ -40,18 +35,11 @@ const styles = {
   nav: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "10px 20px",
-    backgroundColor: "#282c34",
-    color: "white",
-    alignItems: "center",
+    padding: "15px",
+    background: "#e6e6fa"
   },
-  logo: {
-    cursor: "pointer",
-  },
-  links: {
-    display: "flex",
-    gap: "10px",
-  },
+  logo: { cursor: "pointer" },
+  links: { display: "flex", gap: "10px" }
 };
 
 export default Navbar;
